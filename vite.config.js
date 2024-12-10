@@ -4,6 +4,7 @@ import { transformWithEsbuild } from 'vite';
 import restart from 'vite-plugin-restart';
 
 export default defineConfig({
+    base: './',
     root: 'src/',
     publicDir: '../public/',
     plugins: [
