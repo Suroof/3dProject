@@ -12,3 +12,10 @@
   for = "/*.mjs"
   [headers.values]
     Content-Type = "text/javascript"
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "18"
