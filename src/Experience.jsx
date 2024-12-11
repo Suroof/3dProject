@@ -10,6 +10,7 @@ import {
 // import { useControls } from "leva";
 import * as THREE from "three";
 import { useThree, useFrame } from "@react-three/fiber";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 export default function Experience() {
   // CC0 许可的免费模型，由 pmndrs market 制作
@@ -96,21 +97,58 @@ export default function Experience() {
   console.log("Phone Screen Center:", phoneScreenCenter);
   console.log("Phone Screen Size:", phoneScreenSize);
 
-  // 创建音频监听器
-  const listener = new THREE.AudioListener();
-  camera.add(listener);
+  useEffect(() => {
+    let audio;
 
-  // 创建一个全局音频源
-  const sound = new THREE.Audio(listener);
+    const initAudio = () => {
+      // 创建音频元素
+      audio = new Audio('/assets/Glimpse.mp3');
+      audio.loop = true;
+      audio.volume = 0.5;
+    };
 
-  // 使用 AudioLoader 加载音频文件
-  const audioLoader = new THREE.AudioLoader();
-  audioLoader.load("/assets/Glimpse.mp3", function (buffer) {
-    sound.setBuffer(buffer);
-    sound.setLoop(true);
-    sound.setVolume(0.05);
-    sound.play();
-  });
+    const startAudio = () => {
+      if (audio) {
+        audio.play()
+          .then(() => {
+            console.log("Audio started playing successfully");
+            // 成功播放后移除事件监听器
+            window.removeEventListener('click', startAudio);
+            window.removeEventListener('touchstart', startAudio);
+          })
+          .catch(error => {
+            console.error("播放音频失败:", error);
+          });
+      }
+    };
+
+    // 初始化音频
+    initAudio();
+
+    // 添加用户交互事件监听器
+    window.addEventListener('click', startAudio);
+    window.addEventListener('touchstart', startAudio);
+
+    // 清理函数
+    return () => {
+      if (audio) {
+        audio.pause();
+        audio.currentTime = 0;
+      }
+      window.removeEventListener('click', startAudio);
+      window.removeEventListener('touchstart', startAudio);
+    };
+  }, []);
+
+  useEffect(() => {
+    // 创建音频监听器 - 仅用于 Three.js 场景，不处理实际音频播放
+    const listener = new THREE.AudioListener();
+    camera.add(listener);
+
+    return () => {
+      camera.remove(listener);
+    };
+  }, [camera]);
 
   const handleClick = () => {
     navigate("/new");
