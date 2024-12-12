@@ -104,7 +104,7 @@ export default function Experience() {
       // 创建音频元素
       audio = new Audio('/assets/Glimpse.mp3');
       audio.loop = true;
-      audio.volume = 0.5;
+      audio.volume = 0.15;
     };
 
     const startAudio = () => {
