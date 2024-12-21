@@ -3,7 +3,7 @@ info:
   name: 3dProject
   vars:
     GITHUB_API_KEY:
-      description: "GitHub API Key for your project."
+      description: "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"
     OTHER_API_KEY:
       description: "Another API Key required by your project."
 
@@ -15,7 +15,7 @@ envs:
 
 routes:
   main_env: prod
-  main_app: yourapp
+  main_app: 3dProject
 
 auths:
   apikey:
@@ -31,7 +31,7 @@ auths:
         value: ${{vars.OTHER_API_KEY}}
 
 apps:
-  yourapp:
+  3dProject:
     type: web_frontend
     envs:
       dev:
