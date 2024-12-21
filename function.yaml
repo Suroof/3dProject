@@ -1,0 +1,53 @@
+system: 1.0.0
+info:
+  name: 3dProject
+  vars:
+    GITHUB_API_KEY:
+      description: "GitHub API Key for your project."
+    OTHER_API_KEY:
+      description: "Another API Key required by your project."
+
+envs:
+  dev:
+    branch: develop
+  prod:
+    branch: main
+
+routes:
+  main_env: prod
+  main_app: yourapp
+
+auths:
+  apikey:
+    type: api_key
+    envs:
+      dev:
+        in: header
+        name: API-KEY
+        value: ${{vars.OTHER_API_KEY}}
+      prod:
+        in: header
+        name: API-KEY
+        value: ${{vars.OTHER_API_KEY}}
+
+apps:
+  yourapp:
+    type: web_frontend
+    envs:
+      dev:
+        build:
+          root_path: path/to/your/frontend
+          script: npm install; npm run build
+        provision:
+          root_path: path/to/your/frontend/dist
+          type: nodejs18x
+      prod:
+        build:
+          root_path: path/to/your/frontend
+          script: npm install; npm run build
+        provision:
+          root_path: path/to/your/frontend/dist
+          type: nodejs18x
+
+services:
+  # Define any services your app might need
