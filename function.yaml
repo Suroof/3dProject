@@ -1,9 +1,9 @@
 system: 1.0.0
 info:
-  name: Test
+  name: Test1
   vars:
     GITHUB_API_KEY:
-      description: "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"
+      value: "ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 
 envs:
   dev:
@@ -13,7 +13,7 @@ envs:
 
 routes:
   main_env: prod
-  main_app: Test
+  main_app: Test1
 
 auths:
   apikey:
@@ -29,7 +29,7 @@ auths:
         value: ${{vars.OTHER_API_KEY}}
 
 apps:
-  Test:
+  Test1:
     type: web_frontend
     envs:
       dev:
