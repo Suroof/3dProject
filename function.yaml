@@ -11,7 +11,7 @@ envs:
   dev:
     branch: develop
   prod:
-    branch: main
+    branch: master
 
 routes:
   main_env: prod
