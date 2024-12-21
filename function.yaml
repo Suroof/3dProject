@@ -4,8 +4,6 @@ info:
   vars:
     GITHUB_API_KEY:
       description: "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"
-    OTHER_API_KEY:
-      description: "Another API Key required by your project."
 
 envs:
   dev:
@@ -36,17 +34,21 @@ apps:
     envs:
       dev:
         build:
-          root_path: path/to/your/frontend
-          script: npm install; npm run build
+          root_path: .
+          script: |
+            npm install
+            npm run build
         provision:
-          root_path: path/to/your/frontend/dist
+          root_path: dist
           type: nodejs18x
       prod:
         build:
-          root_path: path/to/your/frontend
-          script: npm install; npm run build
+          root_path: .
+          script: |
+            npm install
+            npm run build
         provision:
-          root_path: path/to/your/frontend/dist
+          root_path: dist
           type: nodejs18x
 
 services:
