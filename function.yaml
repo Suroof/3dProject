@@ -3,7 +3,7 @@ info:
   name: Test
   vars:
     GITHUB_API_KEY:
-      description: "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"
+      description: "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"
 
 envs:
   dev:
