@@ -1,0 +1,71 @@
+system: 1.0.0
+info:
+  name: Test1
+  vars:
+    GITHUB_API_KEY:
+      description: >-
+        GitHub Personal Access Token,
+        需要有仓库读写权限
+    STORE_SVC_API_KEY:
+      description: "Store 服务的API KEY"
+
+envs:
+  dev:
+    branch: develop
+  prod:
+    branch: master
+
+routes:
+  main_env: prod
+  main_app: frontend
+
+auths:
+  apikey:
+    type: api_key
+    envs:
+      dev:
+        in: header
+        name: API-KEY
+        value: ${{vars.STORE_SVC_API_KEY}}
+      prod:
+        in: header
+        name: API-KEY
+        value: ${{vars.STORE_SVC_API_KEY}}
+
+apps:
+  frontend:
+    type: web_frontend
+    envs:
+      dev:
+        build:
+          root_path: .
+          script: npm install; npm run build
+        provision:
+          root_path: dist
+          type: nodejs18x
+      prod:
+        build:
+          root_path: .
+          script: npm install; npm run build
+        provision:
+          root_path: dist
+          type: nodejs18x
+
+services:
+  store:
+    type: kv_store
+    envs:
+      dev:
+        auths:
+          - apikey
+        provision:
+          type: kv_store_v1
+          namespaces:
+            - dailycounter
+      prod:
+        auths:
+          - apikey
+        provision:
+          type: kv_store_v1
+          namespaces:
+            - dailycounter
