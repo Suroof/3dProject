@@ -1,6 +1,6 @@
-链接：[https://lapblog.netlify.app/](https://3dcool.netlify.app/)
-![57ae5e12af2f5d25f01648325d81791](https://github.com/user-attachments/assets/7adef132-bb63-4356-ae27-3393f427a8ee)
-[3D展示项目](https://3dcool.netlify.app/)
+[Mine Laptop](https://3dcool.netlify.app/)
+![image](https://github.com/user-attachments/assets/d94997bf-f6b4-47d8-b2ad-569c16fb8cdb)
+
 项目预览
 
 📖 项目概述
@@ -59,8 +59,5 @@ MacBook和iPhone模型的屏幕上分别嵌入了网页内容，通过HTML组件
 
 🖼️ 模型和资源
 项目使用了以下外部资源：
+MacBook模型 来自pmnd免费模型
 
-MacBook模型：来自ThreeJS Journey Experience.jsx:19-21
-iPhone模型：来自Sketchfab Experience.jsx:25-28
-仙人掌模型：来自Sketchfab Experience.jsx:22-24
-HDR环境贴图：Brown Photostudio Experience.jsx:25
