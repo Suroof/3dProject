@@ -4,6 +4,7 @@ import { transformWithEsbuild } from "vite";
 import restart from "vite-plugin-restart";
 import viteCompression from "vite-plugin-compression";
 import { visualizer } from "rollup-plugin-visualizer";
+import autoprefixer from 'autoprefixer';
 
 export default defineConfig({
   base: "./",
@@ -96,8 +97,8 @@ export default defineConfig({
   css: {
     postcss: {
       plugins: [
-        require("autoprefixer"), // 自动添加浏览器前缀
-        require("cssnano")({
+        autoprefixer,
+        cssnano({
           preset: [
             "default",
             {
