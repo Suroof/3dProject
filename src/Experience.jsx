@@ -6,11 +6,23 @@ import {
   Environment,
   useGLTF,
   ContactShadows,
+  useProgress
 } from "@react-three/drei";
 import * as THREE from "three";
 import { useThree, useFrame } from "@react-three/fiber";
 import { useEffect } from "react";
 export default function Experience() {
+  const { progress, loaded, total } = useProgress();
+  //监听加载进度
+  useEffect(() => {
+    // 当所有3D模型加载完成时
+    if (loaded === total && total > 0) {
+      // 通知主加载器3D模型已就绪
+      if (window.notifyAppReady) {
+        window.notifyAppReady();
+      }
+    }
+  }, [loaded, total]);
   const { camera } = useThree();
   const computer = useGLTF(
     "https://vazxmixjsiawhamofees.supabase.co/storage/v1/object/public/models/macbook/model.gltf"
