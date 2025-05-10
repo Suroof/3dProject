@@ -1,0 +1,9 @@
+/* Fix for deprecated -ms-high-contrast */
+@media (forced-colors: active) {
+  /* This replaces all -ms-high-contrast: active rules */
+  /* Apply any specific overrides needed for high contrast mode here */
+}
+
+@media (forced-colors: none) {
+  /* This replaces all -ms-high-contrast: none rules */
+}

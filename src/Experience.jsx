@@ -17,7 +17,7 @@ export default function Experience() {
   const { camera } = useThree();
   const navigate = useNavigate();
   const computer = useGLTF(
-    "https://threejs-journey.com/resources/models/macbook_model.gltf"
+    "https://vazxmixjsiawhamofees.supabase.co/storage/v1/object/public/models/macbook/model.gltf"
   );
   const smallpeo = useGLTF(
     "https://vazxmixjsiawhamofees.supabase.co/storage/v1/object/public/models/cactus/model.gltf"
@@ -102,21 +102,22 @@ export default function Experience() {
 
     const initAudio = () => {
       // 创建音频元素
-      audio = new Audio('/assets/Glimpse.mp3');
+      audio = new Audio("/assets/Glimpse.mp3");
       audio.loop = true;
       audio.volume = 0.15;
     };
 
     const startAudio = () => {
       if (audio) {
-        audio.play()
+        audio
+          .play()
           .then(() => {
             console.log("Audio started playing successfully");
             // 成功播放后移除事件监听器
-            window.removeEventListener('click', startAudio);
-            window.removeEventListener('touchstart', startAudio);
+            window.removeEventListener("click", startAudio);
+            window.removeEventListener("touchstart", startAudio);
           })
-          .catch(error => {
+          .catch((error) => {
             console.error("播放音频失败:", error);
           });
       }
@@ -126,8 +127,8 @@ export default function Experience() {
     initAudio();
 
     // 添加用户交互事件监听器
-    window.addEventListener('click', startAudio);
-    window.addEventListener('touchstart', startAudio);
+    window.addEventListener("click", startAudio);
+    window.addEventListener("touchstart", startAudio);
 
     // 清理函数
     return () => {
@@ -135,8 +136,8 @@ export default function Experience() {
         audio.pause();
         audio.currentTime = 0;
       }
-      window.removeEventListener('click', startAudio);
-      window.removeEventListener('touchstart', startAudio);
+      window.removeEventListener("click", startAudio);
+      window.removeEventListener("touchstart", startAudio);
     };
   }, []);
 
@@ -149,10 +150,6 @@ export default function Experience() {
       camera.remove(listener);
     };
   }, [camera]);
-
-  const handleClick = () => {
-    navigate("/new");
-  };
 
   return (
     <>
@@ -198,32 +195,15 @@ export default function Experience() {
             </Html>
           </primitive>
           {/* 仙人掌 */}
-          <primitive
+          {/* <primitive
             position-y={-1.0}
-            position-x={3}
+            position-x={-3}
             position-z={-1.5}
             object={smallpeo.scene}
             scale={[0.5, 0.5, 0.5]}
-            onClick={handleClick}
             onPointerOver={(e) => e.stopPropagation()}
             onPointerOut={(e) => e.stopPropagation()}
-          />
-          {/* 手机 */}
-          <primitive
-            position={[-3.5, -1.5, -1.8]}
-            rotation={[2.96, 3.14, 3.14]}
-            object={phone.scene}
-          >
-            <Html
-              transform
-              wrapperClass="phoneScreen"
-              distanceFactor={3.98}
-              position={[0.1, 1.3, -0.1]}
-              rotation={[htmlRotationX, htmlRotationY, htmlRotationZ]}
-            >
-              <iframe src="https://img-baofun.zhhainiao.com/pcwallpaper_ugc_mobile/preview/c9d45c198c8ace7d482bf30468b0f890_preview_mid.jpg" />
-            </Html>
-          </primitive>
+          /> */}
           {/* 文本 */}
           <Text
             position={[2, 0.75, 0.8]}
@@ -233,8 +213,7 @@ export default function Experience() {
             font="./bangers-v20-latin-regular.woff"
             fontSize={1}
           >
-            Sroof
-            Web
+            Sroof Web
           </Text>
         </Float>
       </PresentationControls>

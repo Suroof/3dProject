@@ -1,0 +1,17 @@
+# 支持的浏览器列表配置
+# 这会影响autoprefixer、babel等工具
+
+# 前两个版本的主流浏览器
+last 2 versions
+# 浏览器使用量大于0.5%
+> 0.5%
+# 不支持IE
+not IE 11
+# 不支持过时浏览器
+not dead
+
+# 确保支持现代功能的浏览器
+chrome >= 60
+firefox >= 60
+safari >= 12
+edge >= 79
