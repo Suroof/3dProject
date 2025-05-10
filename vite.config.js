@@ -69,6 +69,7 @@ export default defineConfig({
         comments: false, // 删除注释
       },
     },
+    cssCodeSplit: true, // 启用CSS代码分割
     rollupOptions: {
         output: {
             // 代码分割策略

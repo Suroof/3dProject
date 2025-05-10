@@ -7,25 +7,21 @@ import {
   useGLTF,
   ContactShadows,
 } from "@react-three/drei";
-// import { useControls } from "leva";
 import * as THREE from "three";
 import { useThree, useFrame } from "@react-three/fiber";
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 export default function Experience() {
-  // CC0 许可的免费模型，由 pmndrs market 制作
   const { camera } = useThree();
-  const navigate = useNavigate();
   const computer = useGLTF(
     "https://vazxmixjsiawhamofees.supabase.co/storage/v1/object/public/models/macbook/model.gltf"
   );
-  const smallpeo = useGLTF(
-    "https://vazxmixjsiawhamofees.supabase.co/storage/v1/object/public/models/cactus/model.gltf"
-  );
+  // const smallpeo = useGLTF(
+  //   "https://vazxmixjsiawhamofees.supabase.co/storage/v1/object/public/models/cactus/model.gltf"
+  // );
   const hdrFilePath = "/assets/brown_photostudio_02_4k.hdr";
-  const phone = useGLTF(
-    "https://vazxmixjsiawhamofees.supabase.co/storage/v1/object/public/models/iphone-x/model.gltf"
-  );
+  // const phone = useGLTF(
+  //   "https://vazxmixjsiawhamofees.supabase.co/storage/v1/object/public/models/iphone-x/model.gltf"
+  // );
 
   // 使用 Leva 控制模型属性
   // const {
@@ -35,12 +31,6 @@ export default function Experience() {
   //   computerRotationX,
   //   computerRotationY,
   //   computerRotationZ,
-  //   phonePositionX,
-  //   phonePositionY,
-  //   phonePositionZ,
-  //   phoneRotationX,
-  //   phoneRotationY,
-  //   phoneRotationZ,
   //   htmlPositionX,
   //   htmlPositionY,
   //   htmlPositionZ,
@@ -54,12 +44,6 @@ export default function Experience() {
   //   computerRotationX: { value: 0, min: -Math.PI, max: Math.PI },
   //   computerRotationY: { value: 0, min: -Math.PI, max: Math.PI },
   //   computerRotationZ: { value: 0, min: -Math.PI, max: Math.PI },
-  //   phonePositionX: { value: -3.0, min: -5, max: 5 },
-  //   phonePositionY: { value: -1.5, min: -5, max: 5 },
-  //   phonePositionZ: { value: -1.0, min: -5, max: 5 },
-  //   phoneRotationX: { value: 6, min: -Math.PI, max: Math.PI },
-  //   phoneRotationY: { value: Math.PI / 0.5, min: -Math.PI, max: Math.PI },
-  //   phoneRotationZ: { value: 0, min: -Math.PI, max: Math.PI },
   //   htmlPositionX: { value: 0, min: -5, max: 5 },
   //   htmlPositionY: { value: 1.56, min: -5, max: 5 },
   //   htmlPositionZ: { value: -1.4, min: -5, max: 5 },
@@ -73,30 +57,12 @@ export default function Experience() {
   const computerRotationX = 0;
   const computerRotationY = 0;
   const computerRotationZ = 0;
-  const phonePositionX = -3.0;
-  const phonePositionY = -1.5;
-  const phonePositionZ = -1.0;
-  const phoneRotationX = 6;
-  const phoneRotationY = Math.PI / 0.5;
-  const phoneRotationZ = 0;
   const htmlPositionX = 0;
   const htmlPositionY = 1.56;
   const htmlPositionZ = -1.4;
   const htmlRotationX = 0;
   const htmlRotationY = 0;
   const htmlRotationZ = 0;
-
-  // 计算手机模型的屏幕尺寸和中心位置
-  const phoneScreenBox = new THREE.Box3().setFromObject(phone.scene);
-  const phoneScreenSize = new THREE.Vector3();
-  const phoneScreenCenter = new THREE.Vector3();
-  phoneScreenBox.getSize(phoneScreenSize);
-  phoneScreenBox.getCenter(phoneScreenCenter);
-
-  console.log("Phone Screen Size:", phoneScreenSize);
-  console.log("Phone Screen Center:", phoneScreenCenter);
-  console.log("Phone Screen Size:", phoneScreenSize);
-
   useEffect(() => {
     let audio;
 
