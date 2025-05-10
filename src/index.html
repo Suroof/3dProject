@@ -62,14 +62,6 @@
     <link rel="preload" href="./bangers-v20-latin-regular.woff" as="font" type="font/woff" crossorigin>
     <link rel="preconnect" href="https://vazxmixjsiawhamofees.supabase.co">
     <link rel="dns-prefetch" href="https://vazxmixjsiawhamofees.supabase.co">
-
-    <!-- 异步加载非关键CSS -->
-    <link rel="preload" href="./style.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <link rel="preload" href="./forced-colors-fix.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript>
-        <link rel="stylesheet" href="./style.css">
-        <link rel="stylesheet" href="./forced-colors-fix.css">
-    </noscript>
 </head>
 <body>
     <div class="loading-container" id="loading">
@@ -77,22 +69,5 @@
     </div>
     <div id="root"></div>
     <script type="module" src="./index.jsx"></script>
-    <script>
-      // 用于加载CSS的辅助函数
-      (function() {
-        // CSS加载优化
-        var cssMain = document.createElement('link');
-        cssMain.rel = 'stylesheet';
-        cssMain.href = './style.css';
-        cssMain.type = 'text/css';
-        document.head.appendChild(cssMain);
-
-        var cssFixed = document.createElement('link');
-        cssFixed.rel = 'stylesheet';
-        cssFixed.href = './forced-colors-fix.css';
-        cssFixed.type = 'text/css';
-        document.head.appendChild(cssFixed);
-      })();
-    </script>
 </body>
 </html>

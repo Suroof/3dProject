@@ -1,5 +1,5 @@
-// import "./style.css";
-// import "./forced-colors-fix.css";
+import "./style.css";
+import "./forced-colors-fix.css";
 import ReactDOM from "react-dom/client";
 import { Canvas } from "@react-three/fiber";
 import Experience from "./Experience.jsx";
