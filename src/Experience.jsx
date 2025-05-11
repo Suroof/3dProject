@@ -11,18 +11,27 @@ import {
 import * as THREE from "three";
 import { useThree, useFrame } from "@react-three/fiber";
 import { useEffect } from "react";
+
 export default function Experience() {
-  const { progress, loaded, total } = useProgress();
+  const { progress, active, loaded, total } = useProgress();
   //监听加载进度
   useEffect(() => {
     // 当所有3D模型加载完成时
-    if (loaded === total && total > 0) {
-      // 通知主加载器3D模型已就绪
-      if (window.notifyAppReady) {
-        window.notifyAppReady();
-      }
+    if (!active && progress === 100) {
+      console.log("3D scene fully loaded");
+
+      // 等待GPU处理和场景准备完成
+      setTimeout(() => {
+        if (window.notifySceneReady) {
+          window.notifySceneReady();
+        }
+        if (window.notifyAppReady) {
+          window.notifyAppReady();
+        }
+      }, 500);
     }
-  }, [loaded, total]);
+  }, [active, progress]);
+
   const { camera } = useThree();
   const computer = useGLTF(
     "https://vazxmixjsiawhamofees.supabase.co/storage/v1/object/public/models/macbook/model.gltf"
@@ -129,6 +138,30 @@ export default function Experience() {
     };
   }, [camera]);
 
+  // 当组件挂载完成时
+  useEffect(() => {
+    // 预加载模型
+    const preloadModels = async () => {
+      try {
+        // 模拟模型预加载过程
+        await new Promise(resolve => setTimeout(resolve, 300));
+
+        // 通知加载状态
+        if (window.notifyAppReady) {
+          window.notifyAppReady();
+        }
+      } catch (error) {
+        console.error("Error preloading models:", error);
+      }
+    };
+
+    preloadModels();
+
+    return () => {
+      // 清理代码
+    };
+  }, []);
+
   return (
     <>
       {/*预设值已经为电脑模型提供了必要的光线，关闭时还会在屏幕上显示建筑物的反光效果。*/}
@@ -144,7 +177,7 @@ export default function Experience() {
         rotation={[0.13, -0.3, 0.06]}
         polar={[-0.4, 0.2]} // 垂直拖放
         azimuth={[-0.25, 0.75]} //水平拖放
-        config={{ mass: 2, tension: 400 }} // 这会更改您按住拖放操作时发生的情况，您提供的参数会使动画在您移动模型时感觉“有弹性”
+        config={{ mass: 2, tension: 400 }} // 这会更改您按住拖放操作时发生的情况，您提供的参数会使动画在您移动模型时感觉"有弹性"
         snap={{ mass: 4, tension: 400 }} // 这将使模型回到原来的位置
       >
         <Float rotationIntensity={0.4}>

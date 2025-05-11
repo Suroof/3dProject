@@ -36,7 +36,6 @@ src/
 ├── pages/         # 页面组件
 ├── shaders/       # 自定义着色器
 ├── Experience.jsx # 主要3D场景组件
-├── NewComponent.jsx # 新页面组件
 ├── index.html     # HTML模板
 ├── index.jsx      # 应用入口
 └── style.css      # 全局样式

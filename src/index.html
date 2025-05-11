@@ -21,7 +21,18 @@
         /* 防止内容闪烁 */
         #root {
             opacity: 0;
-            transition: opacity 0.5s ease;
+            transition: opacity 0.8s ease; /* 增加过渡时间 */
+            width: 100%;
+            height: 100%;
+            background: #241a1a;
+        }
+
+        @font-face {
+            font-family: 'Bangers';
+            src: url('./bangers-v20-latin-regular.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
         }
 
         /* 立即显示的全屏加载器 */
@@ -37,7 +48,7 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            transition: opacity 0.5s ease;
+            transition: opacity 0.8s ease; /* 增加过渡时间 */
         }
 
         .loader-logo {
@@ -154,9 +165,11 @@
         }
     </style>
 
-    <!-- 预加载字体和资源 -->
-    <link rel="preload" href="./bangers-v20-latin-regular.woff" as="font" type="font/woff" crossorigin>
-    <link rel="preconnect" href="https://vazxmixjsiawhamofees.supabase.co">
+    <!-- 修正字体预加载，使用正确的as值 -->
+    <link rel="preload" href="./bangers-v20-latin-regular.woff" as="font" type="font/woff" crossorigin="anonymous">
+
+    <!-- 预连接到资源域名 -->
+    <link rel="preconnect" href="https://vazxmixjsiawhamofees.supabase.co" crossorigin="anonymous">
     <link rel="dns-prefetch" href="https://vazxmixjsiawhamofees.supabase.co">
 </head>
 <body>
@@ -178,25 +191,26 @@
         <div class="loader-text" id="progress-text">正在加载资源...</div>
     </div>
 
-    <!-- 原有的加载容器可以保留作为备用 -->
-    <div class="loading-container" id="loading">
+    <!-- 移除旧的加载容器，避免混淆 -->
+    <!-- <div class="loading-container" id="loading">
         <div class="loading-spinner"></div>
-    </div>
+    </div> -->
 
     <div id="root"></div>
 
-    <!-- 立即执行的脚本 - 比React早执行 -->
+    <!-- 优化加载脚本，改进状态监测并减少白屏 -->
     <script>
-        // 模拟加载进度
         (function() {
             // 跟踪关键资源加载
             let resourcesLoaded = {
-                html: true,  // HTML已经加载了
-                js: false,   // 主JS文件
-                fonts: false, // 字体
-                models: false // 3D模型
+                html: true,       // HTML已经加载了
+                js: false,        // 主JS文件
+                fonts: false,     // 字体
+                models: false,    // 3D模型
+                scene: false      // 3D场景渲染
             };
 
+            let startTime = Date.now();
             const progressBar = document.getElementById('progress-bar');
             const progressText = document.getElementById('progress-text');
             const initialLoader = document.getElementById('initial-loader');
@@ -204,38 +218,53 @@
 
             // 初始进度设置
             let progress = 0;
+            let artificialProgress = 0;
             updateProgress();
+
+            // 模拟进度增长，即使没有实际进度更新
+            const simulateProgress = () => {
+                if (artificialProgress < 90 && !resourcesLoaded.models) {
+                    artificialProgress += 0.5;
+                    progressBar.style.width = artificialProgress + '%';
+                    progressText.innerText = Math.floor(artificialProgress) + '% 加载中...';
+
+                    // 继续模拟进度增长
+                    setTimeout(simulateProgress, 100);
+                }
+            };
+
+            // 启动模拟进度
+            simulateProgress();
 
             // 更新加载进度条
             function updateProgress() {
-                // 计算加载百分比
-                let targetProgress = 0;
+                // 计算实际加载百分比
                 let loadedCount = Object.values(resourcesLoaded).filter(val => val).length;
                 let totalResources = Object.keys(resourcesLoaded).length;
-                targetProgress = Math.round((loadedCount / totalResources) * 100);
+                let targetProgress = Math.round((loadedCount / totalResources) * 100);
 
-                // 平滑更新进度条
-                let currentProgress = progress;
-                const animate = () => {
-                    if (currentProgress < targetProgress) {
-                        currentProgress += 1;
-                        progressBar.style.width = currentProgress + '%';
-                        progressText.innerText = currentProgress + '% 加载中...';
-                        requestAnimationFrame(animate);
-                    }
-                };
-                animate();
-                progress = targetProgress;
+                // 如果实际进度超过了模拟进度，使用实际进度
+                if (targetProgress > artificialProgress) {
+                    artificialProgress = targetProgress;
+                }
+
+                progressBar.style.width = artificialProgress + '%';
+                progressText.innerText = Math.floor(artificialProgress) + '% 加载中...';
 
                 // 如果所有资源加载完毕，准备隐藏加载器
                 if (targetProgress >= 100) {
+                    console.log("All resources loaded in " + (Date.now() - startTime) + "ms");
+
+                    // 显示主内容
+                    root.style.opacity = '1';
+
+                    // 延迟隐藏加载器，给用户一个看到100%的机会
                     setTimeout(() => {
                         initialLoader.style.opacity = '0';
-                        root.style.opacity = '1';
                         setTimeout(() => {
                             initialLoader.style.display = 'none';
-                        }, 500);
-                    }, 500); // 延迟半秒展示100%完成状态
+                        }, 800);
+                    }, 500);
                 }
             }
 
@@ -245,16 +274,20 @@
                 updateProgress();
             });
 
-            // 监听主JS脚本加载
+            // 监听页面完全加载
             window.addEventListener('load', function() {
                 resourcesLoaded.js = true;
                 updateProgress();
 
                 // 监听字体加载
                 if ('fonts' in document) {
-                    Promise.all([
-                        document.fonts.load('1em "Bangers"')
-                    ]).then(() => {
+                    // 尝试加载Bangers字体
+                    document.fonts.ready.then(() => {
+                        resourcesLoaded.fonts = true;
+                        updateProgress();
+                    }).catch(err => {
+                        console.error("Font loading error:", err);
+                        // 即使出错也标记为已完成
                         resourcesLoaded.fonts = true;
                         updateProgress();
                     });
@@ -263,24 +296,31 @@
                     setTimeout(() => {
                         resourcesLoaded.fonts = true;
                         updateProgress();
-                    }, 1000);
+                    }, 800);
                 }
             });
 
             // 为React应用提供加载完成通知机制
             window.notifyAppReady = function() {
+                console.log("App reported ready");
                 resourcesLoaded.models = true;
-                updateProgress();
+
+                // 等待一小段时间，确保场景已渲染
+                setTimeout(() => {
+                    resourcesLoaded.scene = true;
+                    updateProgress();
+                }, 300);
             };
 
-            // 确保即使出错也能最终显示内容
+            // 确保即使出错也能最终显示内容 - 缩短超时时间以减少白屏
             setTimeout(() => {
-                initialLoader.style.opacity = '0';
-                root.style.opacity = '1';
-                setTimeout(() => {
-                    initialLoader.style.display = 'none';
-                }, 500);
-            }, 10000); // 10秒后强制隐藏加载器
+                if (artificialProgress < 100) {
+                    console.log("Forcing display after timeout");
+                    resourcesLoaded.models = true;
+                    resourcesLoaded.scene = true;
+                    updateProgress();
+                }
+            }, 6000); // 减少为6秒
         })();
     </script>
 
