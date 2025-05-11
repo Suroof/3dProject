@@ -191,11 +191,6 @@
         <div class="loader-text" id="progress-text">正在加载资源...</div>
     </div>
 
-    <!-- 移除旧的加载容器，避免混淆 -->
-    <!-- <div class="loading-container" id="loading">
-        <div class="loading-spinner"></div>
-    </div> -->
-
     <div id="root"></div>
 
     <!-- 优化加载脚本，改进状态监测并减少白屏 -->
@@ -258,7 +253,7 @@
                     // 显示主内容
                     root.style.opacity = '1';
 
-                    // 延迟隐藏加载器，给用户一个看到100%的机会
+                    // 延迟隐藏加载器，给用户看到100%
                     setTimeout(() => {
                         initialLoader.style.opacity = '0';
                         setTimeout(() => {
