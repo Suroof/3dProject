@@ -4,8 +4,8 @@ import { transformWithEsbuild } from "vite";
 import restart from "vite-plugin-restart";
 import viteCompression from "vite-plugin-compression";
 import { visualizer } from "rollup-plugin-visualizer";
-import autoprefixer from 'autoprefixer';
-import cssnano from 'cssnano';
+import autoprefixer from "autoprefixer";
+import cssnano from "cssnano";
 
 export default defineConfig({
   base: "./",
@@ -51,7 +51,13 @@ export default defineConfig({
       }),
   ].filter(Boolean), // 过滤掉可能为假值的插件,
   server: {
-    host: true,
+    host: "localhost",
+    port: 8080,
+    hmr: {
+      overlay: true,
+      host: "localhost",
+      port: 8080,
+    },
     open: !("SANDBOX_URL" in process.env || "CODESANDBOX_HOST" in process.env), // Open if it's not a CodeSandbox
   },
   build: {
@@ -71,29 +77,34 @@ export default defineConfig({
     },
     cssCodeSplit: true, // 启用CSS代码分割
     rollupOptions: {
-        output: {
-            // 代码分割策略
-            manualChunks: {
-                'vendor': ['react', 'react-dom', 'react-router-dom'],
-                'three-vendor': ['three', '@react-three/fiber', '@react-three/drei', 'three-stdlib'],
-                'ui-vendor': ['antd', 'leva'],
-            },
-            // 自定义文件名格式
-            chunkFileNames: 'assets/js/[name]-[hash].js',
-            entryFileNames: 'assets/js/[name]-[hash].js',
-            assetFileNames: (assetInfo) => {
-                if (assetInfo.name.endsWith('.css')) {
-                    return 'assets/css/[name]-[hash][extname]';
-                }
-                if (/\.(png|jpe?g|gif|svg|webp|ico)$/.test(assetInfo.name)) {
-                    return 'assets/images/[name]-[hash][extname]';
-                }
-                if (/\.(woff2?|eot|ttf|otf)$/.test(assetInfo.name)) {
-                    return 'assets/fonts/[name]-[hash][extname]';
-                }
-                return 'assets/[name]-[hash][extname]';
-            }
+      output: {
+        // 代码分割策略
+        manualChunks: {
+          vendor: ["react", "react-dom", "react-router-dom"],
+          "three-vendor": [
+            "three",
+            "@react-three/fiber",
+            "@react-three/drei",
+            "three-stdlib",
+          ],
+          "ui-vendor": ["antd", "leva"],
         },
+        // 自定义文件名格式
+        chunkFileNames: "assets/js/[name]-[hash].js",
+        entryFileNames: "assets/js/[name]-[hash].js",
+        assetFileNames: (assetInfo) => {
+          if (assetInfo.name.endsWith(".css")) {
+            return "assets/css/[name]-[hash][extname]";
+          }
+          if (/\.(png|jpe?g|gif|svg|webp|ico)$/.test(assetInfo.name)) {
+            return "assets/images/[name]-[hash][extname]";
+          }
+          if (/\.(woff2?|eot|ttf|otf)$/.test(assetInfo.name)) {
+            return "assets/fonts/[name]-[hash][extname]";
+          }
+          return "assets/[name]-[hash][extname]";
+        },
+      },
     },
   },
   css: {
@@ -117,6 +128,13 @@ export default defineConfig({
   },
   //预构建依赖项
   optimizeDeps: {
-    include: ['react', 'react-dom', 'react-router-dom', 'three', '@react-three/fiber', '@react-three/drei'],
+    include: [
+      "react",
+      "react-dom",
+      "react-router-dom",
+      "three",
+      "@react-three/fiber",
+      "@react-three/drei",
+    ],
   },
 });
